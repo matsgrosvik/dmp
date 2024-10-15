@@ -1,5 +1,4 @@
 import { BlockPicker } from "react-color";
-import { useState } from "react";
 
 interface Props {
   color: string;

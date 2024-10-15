@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import ColorPicker from "../ColorPicker/ColorPicker";
+import Panel from "../Panel/Panel";
+import "./ImageConverter.scss";
 
 interface Props {
   initialSize?: number;
@@ -16,6 +17,7 @@ const ImageConverter: React.FC<Props> = ({}) => {
   const [color, setColor] = useState("#2c301d");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [maxImageSize, setMaxImageSize] = useState(800);
+  const [fileName, setFilename] = useState("");
 
   useEffect(() => {
     if (imageFile) {
@@ -26,6 +28,8 @@ const ImageConverter: React.FC<Props> = ({}) => {
         img.src = e.target?.result as string;
       };
       reader.readAsDataURL(imageFile);
+      let name = imageFile.name.split(".");
+      setFilename(name[0]);
     }
   }, [imageFile, size, inverted, color, maxImageSize, sensetivity, brightness]);
 
@@ -137,7 +141,7 @@ const ImageConverter: React.FC<Props> = ({}) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "hexagonal_image.svg";
+    a.download = `${fileName}.svg`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -166,7 +170,7 @@ const ImageConverter: React.FC<Props> = ({}) => {
         const pngUrl = canvas.toDataURL("image/png");
         const a = document.createElement("a");
         a.href = pngUrl;
-        a.download = "hexagonal_image.png";
+        a.download = `${fileName}.png`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -179,108 +183,30 @@ const ImageConverter: React.FC<Props> = ({}) => {
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-3xl font-bold mb-4">Hexagon Image Converter</h1>
-        <label
-          htmlFor="imageUpload"
-          className="cursor-pointer flex items-center justify-center bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 mb-4">
-          Upload Image
-        </label>
-        <input
-          id="imageUpload"
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="hidden"
-        />
-        <div className="mb-4">
-          <label className="block mb-2">Image Size:</label>
-          <input
-            type="range"
-            min="100"
-            max="4000"
-            step="50"
-            value={maxImageSize}
-            onChange={(e) => setMaxImageSize(Number(e.target.value))}
-            className="w-full"
-          />
-          <span>{maxImageSize}px</span>
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2">Hexagon Size:</label>
-          <input
-            type="range"
-            min="3"
-            step="0.5"
-            max="20"
-            value={size}
-            onChange={(e) => setSize(Number(e.target.value))}
-            className="w-full"
-          />
-          <span>{size}</span>
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2">Sensetivity:</label>
-          <input
-            type="range"
-            min="0"
-            step="0.5"
-            max="5"
-            value={sensetivity}
-            onChange={(e) => setSensetivity(Number(e.target.value))}
-            className="w-full"
-          />
-          <span>{sensetivity}</span>
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2">Brightness:</label>
-          <input
-            type="range"
-            min="0.1"
-            step="0.05"
-            max="1"
-            value={brightness}
-            onChange={(e) => setBrightness(Number(e.target.value))}
-            className="w-full"
-          />
-          <span>{brightness}</span>
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2">
-            <input
-              type="checkbox"
-              checked={inverted}
-              onChange={(e) => setInverted(e.target.checked)}
-              className="mr-2"
-            />
-            Invert
-          </label>
-        </div>
-        <div className="mb-4">
-          <ColorPicker setColor={setColor} color={color} />
-        </div>
-        {svgContent && (
-          <div className="mt-4">
-            <button
-              onClick={handleDownload}
-              className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-300">
-              Download SVG
-            </button>
-            <button
-              onClick={downLoadPng}
-              className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-300">
-              Download PNG
-            </button>
-          </div>
-        )}
-      </div>
+    <div
+      className={`img-converter ${color === "#ccf9c2" ? "light" : "dark"}`}
+      style={{ display: "flex" }}>
+      <Panel
+        handleFileChange={handleFileChange}
+        color={color}
+        setColor={setColor}
+        maxImageSize={maxImageSize}
+        setMaxImageSize={setMaxImageSize}
+        size={size}
+        setSize={setSize}
+        inverted={inverted}
+        setInverted={setInverted}
+        brightness={brightness}
+        sensetivity={sensetivity}
+        setBrightness={setBrightness}
+        setSensetivity={setSensetivity}
+        svgContent={svgContent}
+        downLoadPng={downLoadPng}
+        handleDownload={handleDownload}
+        fileName={fileName}
+      />
       {svgContent && (
-        <div
-          dangerouslySetInnerHTML={{ __html: svgContent }}
-          className="mb-4"
-          id="svg"
-        />
+        <div dangerouslySetInnerHTML={{ __html: svgContent }} id="svg" />
       )}
     </div>
   );

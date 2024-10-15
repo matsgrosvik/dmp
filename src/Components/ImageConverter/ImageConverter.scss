@@ -1,0 +1,18 @@
+.img-converter.light {
+  background-color: #2c301d;
+}
+.img-converter.dark {
+  background-color: #ccf9c2;
+}
+.img-converter {
+  height: 100vh;
+}
+#svg {
+  overflow: auto;
+  flex: 1;
+  text-align: center;
+  align-content: center;
+}
+.hidden {
+  visibility: hidden;
+}

@@ -46,13 +46,8 @@ const ImageConverter: React.FC<Props> = ({}) => {
     let height = img.height;
     const aspectRatio = width / height;
 
-    if (width > height) {
-      width = Math.min(width, maxImageSize);
-      height = width / aspectRatio;
-    } else {
-      height = Math.min(height, maxImageSize);
-      width = height * aspectRatio;
-    }
+    width = maxImageSize;
+    height = width / aspectRatio;
 
     canvas.width = width;
     canvas.height = height;

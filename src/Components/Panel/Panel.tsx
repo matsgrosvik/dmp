@@ -60,13 +60,13 @@ const Panel: React.FC<Props> = ({
           />
           {fileName && (
             <span className="upload-label-uploaded">
-              Lastet opp : {fileName}
+              Lastet opp : <b>{fileName}</b>
             </span>
           )}
         </div>
         <div className="slider">
           <label className="slider-header">
-            Bildestørrelse:
+            Bildebredde:
             <span>{maxImageSize}px</span>
           </label>
           <input

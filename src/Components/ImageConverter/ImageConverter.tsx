@@ -42,13 +42,8 @@ const ImageConverter: React.FC<Props> = ({}) => {
     let height = img.height;
     const aspectRatio = width / height;
 
-    if (width > height) {
-      width = Math.min(width, maxImageSize);
-      height = width / aspectRatio;
-    } else {
-      height = Math.min(height, maxImageSize);
-      width = height * aspectRatio;
-    }
+    width = maxImageSize;
+    height = width / aspectRatio;
 
     canvas.width = width;
     canvas.height = height;
@@ -195,7 +190,7 @@ const ImageConverter: React.FC<Props> = ({}) => {
           className="hidden"
         />
         <div className="mb-4">
-          <label className="block mb-2">Image Size:</label>
+          <label className="block mb-2">Image Width:</label>
           <input
             type="range"
             min="100"
